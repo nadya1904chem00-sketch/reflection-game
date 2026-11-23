@@ -94,6 +94,25 @@ body {
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
+// iPhone: без этого звук игры молчит, если на телефоне включён беззвучный режим (переключатель сбоку)
+(function () {
+	try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+	var unlocked = false;
+	var unlock = function () {
+		if (unlocked) return;
+		unlocked = true;
+		try {
+			var a = document.createElement('audio');
+			a.setAttribute('playsinline', '');
+			a.loop = true;
+			a.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
+			a.play().catch(function () {});
+		} catch (e) {}
+	};
+	['touchend', 'click', 'keydown'].forEach(function (e) { window.addEventListener(e, unlock, true); });
+})();
+</script>
+<script>
 // Telegram Mini App: сказать Telegram, что игра готова, развернуть на весь экран, не закрывать свайпом вниз
 (function () {
 	var tg = window.Telegram && window.Telegram.WebApp;
@@ -134,7 +153,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":14285728,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":14286256,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
